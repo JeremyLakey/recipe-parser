@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import json
+from datetime import date
 import collections
 
 options = Options()
@@ -11,7 +12,44 @@ options.add_argument("--window-size=1920,1200")
 
 driver=webdriver.Chrome(options=options)
 
-def parse_recipe_json(meta):
+def parse_time(t):
+    temp = t[2:]
+    nums = []
+    stamps = []
+    curr = ""
+    i = 0
+    while i < len(temp):
+        if temp[i].isnumeric():
+            curr = curr + temp[i]
+            print(curr)
+        else:
+            nums.append(int(curr))
+            stamps.append(temp[i])
+            curr = ""
+        i += 1
+    f = ""
+    print(nums)
+    for i in range(len(nums)):
+        if stamps[i] == 'M':
+            if nums[i] == 0:
+                return f
+            elif nums[i] == 1:
+                f += str(nums[i]) + ' Minute '
+            else:
+                if nums[i] > 90:
+                    f += parse_time("PT" + str(nums[i] // 60) + "H" + str(nums[i] % 60) + "M")
+                else:
+                    f += str(nums[i]) + ' Minutes '
+        elif stamps[i] == 'H':
+            if nums[i] == 1:
+                f += str(nums[i]) + ' Hour '
+            else:
+                f += str(nums[i]) + ' Hours '
+        else:
+            f += str(nums[i]) + ' '
+
+    return f
+def parse_recipe_json(meta, url):
     file = open( "recipes/" + meta["name"] + ".md", mode='w', encoding='utf-8')
     file.write("# " + meta["name"])
     file.write("\n")
@@ -30,6 +68,17 @@ def parse_recipe_json(meta):
         elif type(img_data) is dict:
             file.write("![main](" + img_data['url'] + ")")
 
+    file.write("\n### Details:")
+    if "totalTime" in meta:
+        file.write("\n")
+        file.write("Total time: " + parse_time(meta["totalTime"]))
+        file.write("\n")
+
+    if "recipeYield" in meta:
+        file.write("\n")
+        file.write("Servings: " + str(meta["recipeYield"]))
+        file.write("\n")
+
     file.write("\n# Ingredients:\n")
     for ing in meta["recipeIngredient"]:
         file.write(ing)
@@ -46,6 +95,16 @@ def parse_recipe_json(meta):
             for stepp in step["itemListElement"]:
                 file.write("- " + stepp['text'])
                 file.write("\n\n")
+
+    file.write("\n\n\n\n # About\n")
+    if "author" in meta:
+        if "@id" in meta["author"]:
+            file.write("By: " + meta["author"]["@id"])
+        else:
+            file.write("By: " + meta["author"]["name"])
+        file.write("\n")
+    file.write("#### Source: " + url)
+    file.write("\n\n#### Date: " + str(date.today()))
     file.close()
 
 def scrap_recipe(url):
@@ -59,13 +118,14 @@ def scrap_recipe(url):
             meta = json.loads(tex)
             if type(meta) is dict:
                 if "@type" in meta and meta["@type"] == "Recipe":
-                    parse_recipe_json(meta)
+                    print(meta)
+                    parse_recipe_json(meta, url)
                     return
                 for key in meta["@graph"]:
                     if key["@type"] == 'Recipe':
-                        parse_recipe_json(key)
+                        parse_recipe_json(key, url)
             else:
-                parse_recipe_json(meta[0])
+                parse_recipe_json(meta[0], url)
 
 
 
