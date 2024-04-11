@@ -50,7 +50,8 @@ def parse_time(t):
 
     return f
 def parse_recipe_json(meta, url):
-    file = open( "recipes/" + meta["name"] + ".md", mode='w', encoding='utf-8')
+    file_path = "recipes/" + meta["name"] + ".md"
+    file = open(file_path, mode='w', encoding='utf-8')
     file.write("# " + meta["name"])
     file.write("\n")
 
@@ -106,6 +107,7 @@ def parse_recipe_json(meta, url):
     file.write("#### Source: " + url)
     file.write("\n\n#### Date: " + str(date.today()))
     file.close()
+    return file_path
 
 def scrap_recipe(url):
     driver.get(url)
@@ -123,18 +125,19 @@ def scrap_recipe(url):
                     return
                 for key in meta["@graph"]:
                     if key["@type"] == 'Recipe':
-                        parse_recipe_json(key, url)
+                        return parse_recipe_json(key, url)
             else:
-                parse_recipe_json(meta[0], url)
+                return parse_recipe_json(meta[0], url)
+    return None
 
 
 
 # urls = ["https://joyfoodsunshine.com/the-most-amazing-chocolate-chip-cookies/","https://www.allrecipes.com/recipe/17481/simple-white-cake/", "https://sallysbakingaddiction.com/homemade-pizza-crust-recipe/"]
-urls = ["https://kidtestedrecipes.com/easy-chipotle-chicken-wrap/?utm_source=pinterest&utm_medium=social&utm_campaign=grow-social-pro","https://natashaskitchen.com/creamy-cajun-chicken-pasta/","https://maesmenu.com/recipes/chicken-miso-soup/","https://www.cook2eatwell.com/chicken-satay-with-peanut-sauce/","https://www.saltandlavender.com/creamy-mushroom-chicken/"]
+# urls = ["https://kidtestedrecipes.com/easy-chipotle-chicken-wrap/?utm_source=pinterest&utm_medium=social&utm_campaign=grow-social-pro","https://natashaskitchen.com/creamy-cajun-chicken-pasta/","https://maesmenu.com/recipes/chicken-miso-soup/","https://www.cook2eatwell.com/chicken-satay-with-peanut-sauce/","https://www.saltandlavender.com/creamy-mushroom-chicken/"]
+#urls = ["https://sweetandsavorymeals.com/cheesecake-factory-avocado-egg-rolls-copycat-recipe/", "https://www.gimmesomeoven.com/soft-pretzel-bites/", "https://howtofeedaloon.com/roasted-tomato-basil-soup/", "https://iwashyoudry.com/raspberry-pretzel-salad-recipe/", "https://www.julieseatsandtreats.com/dirt-cups/"]
 
-
-for u in urls:
-    try:
-        scrap_recipe(u)
-    except:
-        print(u + " failed")
+#for u in urls:
+   # try:
+   #     scrap_recipe(u)
+    #except:
+    #    print(u + " failed")
