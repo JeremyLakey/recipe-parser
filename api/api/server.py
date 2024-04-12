@@ -1,6 +1,5 @@
-import os
-from flask import Flask, request, make_response, send_file
-from scraper import scrap_recipe
+from flask import Flask, request, make_response
+from api.api.recipe_api.scraper import scrap_recipe
 
 app = Flask(__name__)
 

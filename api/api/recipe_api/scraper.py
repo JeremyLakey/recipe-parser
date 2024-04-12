@@ -21,14 +21,13 @@ def parse_time(t):
     while i < len(temp):
         if temp[i].isnumeric():
             curr = curr + temp[i]
-            print(curr)
         else:
             nums.append(int(curr))
             stamps.append(temp[i])
             curr = ""
         i += 1
     f = ""
-    print(nums)
+
     for i in range(len(nums)):
         if stamps[i] == 'M':
             if nums[i] == 0:
@@ -50,7 +49,7 @@ def parse_time(t):
 
     return f
 def parse_recipe_json(meta, url):
-    file_path = "recipes/" + meta["name"] + ".md"
+    file_path = "recipe_api/recipes/" + meta["name"] + ".md"
     file = open(file_path, mode='w', encoding='utf-8')
     file.write("# " + meta["name"])
     file.write("\n")
@@ -120,7 +119,6 @@ def scrap_recipe(url):
             meta = json.loads(tex)
             if type(meta) is dict:
                 if "@type" in meta and meta["@type"] == "Recipe":
-                    print(meta)
                     parse_recipe_json(meta, url)
                     return
                 for key in meta["@graph"]:
