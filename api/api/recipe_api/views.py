@@ -13,6 +13,10 @@ def parse(request):
             with open(temp, 'r') as f:
                 file_data = f.read()
             os.remove(temp)
-            return HttpResponse(file_data, content_type="text/markdown")
+            res = HttpResponse(file_data, content_type="text/markdown")
+            res['Content-Disposition'] = 'attachment; filename="' + temp.split("/")[-1] + '"'
+            res['access-control-expose-headers'] = '*'
+            print(res['Content-Disposition'])
+            return res
 
     return HttpResponse("Couldn't find it bro")

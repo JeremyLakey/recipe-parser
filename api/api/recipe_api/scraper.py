@@ -101,7 +101,10 @@ def parse_recipe_json(meta, url):
         if "@id" in meta["author"]:
             file.write("By: " + meta["author"]["@id"])
         else:
-            file.write("By: " + meta["author"]["name"])
+            if type(meta["author"]) is list:
+                file.write("By: " + meta["author"][0]["name"])
+            else:
+                file.write("By: " + meta["author"]["name"])
         file.write("\n")
     file.write("#### Source: " + url)
     file.write("\n\n#### Date: " + str(date.today()))
