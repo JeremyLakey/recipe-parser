@@ -2,11 +2,7 @@ html {
     text-align: center;
     font-family: 'Inter', sans-serif;
     color: #3b3b3b;
-    background: rgb(166,167,177);
-    background: -moz-linear-gradient(90deg, rgba(166,167,177,1) 0%, rgba(223,223,223,1) 33%, rgba(160,169,170,1) 100%);
-    background: -webkit-linear-gradient(90deg, rgba(166,167,177,1) 0%, rgba(223,223,223,1) 33%, rgba(160,169,170,1) 100%);
-    background: linear-gradient(90deg, rgba(166,167,177,1) 0%, rgba(223,223,223,1) 33%, rgba(160,169,170,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#a6a7b1",endColorstr="#a0a9aa",GradientType=1);
+    background-color: aliceblue;
 
     padding: 0px;
 }
@@ -14,4 +10,46 @@ html {
 body {
     padding: 0px;
     margin: 0px;
+}
+
+#nav-bar {
+    background-color: aquamarine;
+    padding: 20px;
+}
+
+#top {
+    margin: 0 auto;
+    max-width: 800px;
+    padding-left: 20px;
+}
+
+#top-title {
+    color: #282627;
+    width: 224px;
+    margin: 0;
+    margin-right: 100%;
+
+}
+
+#inputs {
+    margin-right: 12px;
+
+}
+
+#inner-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0;
+}
+
+select {
+    display: inline;
+    flex-grow: 0;
+    margin-right: 12px;
+}
+
+input {
+    display: inline;
+    flex-grow: 0;
 }

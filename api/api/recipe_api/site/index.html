@@ -12,11 +12,31 @@
     </header>
     <body>
 
-        <div id="title-bar">
-            <h1 id="title">Recipe Parser</h1>
+        <div id="nav-bar">
+            <div id="top">
+                <h1 id="top-title">Recipe Parser</h1>
+            </div>
         </div>
-        <input type="text" id="url-input" value=""/>
-        <button id="submit">Parse</button>
+        
+
+        <div id="title-bar">
+            <p id="title">Paste Recipe Url</p>
+        </div>
+        <div>
+            <span id="inputs">
+                <span id="inner-inputs">
+                <input type="text" id="url-input" value=""/>
+                <select id="file-type" name="file type">
+                    <option value="md">.md</option>
+                    <option value="txt">.txt</option>
+                  </select>
+                  
+                <button id="submit">Parse</button>
+                </span>
+            </span>
+            
+              
+        </div>
         <script src="./script.js"></script>
         <span id="loading-item" style="display: none;">Generating....</span>
     </body>
